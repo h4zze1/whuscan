@@ -17,10 +17,26 @@ def hashspider(url, log_path):
         sys.stdout.flush()
         try:
             htmltext = requests.get(urls[0]).text
-            urlhash = func.md5(htmltext)
-            with open(log_path + 'webhash.csv', 'ab+') as csvfile:
-                spamwriter = csv.writer(csvfile, dialect='excel')
-                spamwriter.writerow([urls[0], urlhash])
+            urlhash = func.md5(htmltext[10:600])
+
+            csvfiler = file(log_path + 'webhash.csv', 'rb')
+            reader = csv.reader(csvfiler)
+            r = 0 # repeat
+            for line in reader:
+                if urls[0] == line[0]:
+                    r = 1
+                    if urlhash != line[1]:
+                        print line, 'has been tampered!', urlhash
+                        exit()
+                else:
+                    pass
+            csvfiler.close()
+            if r == 0:
+                with open(log_path + 'webhash.csv', 'ab+') as csvfile:
+                    spamwriter = csv.writer(csvfile, dialect='excel')
+                    spamwriter.writerow([urls[0], urlhash])
+                    csvfile.close()
+
             print urls[0], '[Good]'
         except:
             print urls[0], '[Bad]'
