@@ -33,7 +33,7 @@ def main():
                         action="store_true", default=False)
     parser.add_argument("-hc", "--hashcheck", help="Crawl your website and check if your website hase been tampered",
                         action="store_true", default=False)
-    parser.add_argument("-rt", "--roundtime", help="Input the time between 2 rounds of the whuscan. If it is empty, the script will be exacuted 1 time",
+    parser.add_argument("-rt", "--roundtime", help="Input the time between 2 rounds of the whuscan. 1 time default",
                         action="store", type=int, default=0)
     args = parser.parse_args()
 

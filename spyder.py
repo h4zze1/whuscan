@@ -21,17 +21,17 @@ def hashspider(url, log_path):
 
             csvfiler = file(log_path + 'webhash.csv', 'rb')
             reader = csv.reader(csvfiler)
-            r = 0 # repeat
+            exists = False # exists or not?
             for line in reader:
                 if urls[0] == line[0]:
-                    r = 1
+                    exists = True
                     if urlhash != line[1]:
                         print line, 'has been tampered!', urlhash
                         exit()
                 else:
                     pass
             csvfiler.close()
-            if r == 0:
+            if exists == False:  # Not exists, so it should be written into the log file.
                 with open(log_path + 'webhash.csv', 'ab+') as csvfile:
                     spamwriter = csv.writer(csvfile, dialect='excel')
                     spamwriter.writerow([urls[0], urlhash])
@@ -48,6 +48,6 @@ def hashspider(url, log_path):
 
         for tag in soup.findAll('a', href = True):
             tag['href'] = urlparse.urljoin(url, tag['href'])
-            if url in tag['href'] and tag['href'] not in visited and "#" not in tag['href']: # sanme domin
+            if url in tag['href'] and tag['href'] not in visited and "#" not in tag['href']: # While in the sanme domin
                 urls.append(tag['href'])
                 visited.append(tag['href'])
